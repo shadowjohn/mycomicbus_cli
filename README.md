@@ -26,6 +26,9 @@ https://img4.8comic.com/4/17779/1/007_7uj.jpg<br>
 ...<br>
 ...<br>
 <br>
+<h3>下載範例：</h3>
+binary\wget.exe "https://img4.8comic.com/4/17779/1/001_NT2.jpg" -O 001.png
+<br>
 <h3>編譯環境：</h3>
 VisualStudio 2017
 <br>
@@ -33,6 +36,4 @@ VisualStudio 2017
 <ul>
   <li>Microsoft.JScript</li>
 </ul>
-<br>
-<h3>下載範例：</h3>
-binary\wget.exe "https://img4.8comic.com/4/17779/1/001_NT2.jpg" -O 001.png
+
