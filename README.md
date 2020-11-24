@@ -3,9 +3,9 @@
 <h3>Author : 羽山 https://3wa.tw/</h3>
 <h3>Version : 2020-11-24</h3>
 <br>
-<img src="snapshot/m1.png">
-直接下語法抓 comicbus 8comic 漫畫列表
 <img src="snapshot\01.png">
+直接下語法抓 comicbus 8comic 漫畫列表
+
 
 <br>
 <h3>使用方法：</h3>
