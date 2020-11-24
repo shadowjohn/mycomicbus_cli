@@ -12,7 +12,7 @@
 
 mycomicbus_cli.exe<br>
 mycomicbus_cli.exe test<br>
-mycomicbus_cli.exe "https://www.comicbus.com/html/17779.html"<br>
+mycomicbus_cli.exe "https://comicbus.live/online/a-18838.html?ch=1"<br>
 
 <h3>回應：</h3>
 Totals:70<br>
