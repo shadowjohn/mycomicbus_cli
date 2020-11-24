@@ -5,6 +5,8 @@
 <br>
 <img src="snapshot/m1.png">
 直接下語法抓 comicbus 8comic 漫畫列表
+<img src="snapshot\01.png">
+
 <br>
 <h3>使用方法：</h3>
 
