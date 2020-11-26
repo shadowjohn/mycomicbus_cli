@@ -63,17 +63,21 @@ Usage :
 
             string data = my.b2s(my.file_get_contents(URL));
             //echo(data);
-            List<string> preScripts = new List<string>();
-            preScripts.Add("var y='';");
+            List<string> preScripts = new List<string>();            
+            preScripts.Add("var y='46';");
             preScripts.Add("function spp(){};");
             preScripts.Add("var WWWWWTTTTTFFFFF='';");
             preScripts.Add("var document='';");
             preScripts.Add("function mm(p){return (parseInt((p-1)/10)%10)+(((p-1)%10)*3)};");
             preScripts.Add("function nn(n){return n<10?'00'+n:n<100?'0'+n:n;};");
             preScripts.Add("function su(a,b,c){var e=(a+'').substring(b,b+c);return (e);};");
-            preScripts.Add("function lc(l){ if (l.length != 2) return l; var az = \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"; var a = l.substring(0, 1); var b = l.substring(1, 2); if (a == \"Z\") return 8000 + az.indexOf(b); else return az.indexOf(a) * 52 + az.indexOf(b); };");
+            preScripts.Add("function lc(l){ if (l.length != 2) return l; var az = \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"; var a = l.substring(0, 1); var b = l.substring(1, 2); if (a == \"Z\") return 8000 + az.indexOf(b); else return az.indexOf(a) * 52 + az.indexOf(b); };");                            
+             
+            string ch = my.explode("-",my.explode("ch=",URL)[1])[0];//第幾回
+            //preScripts.Add("ch=" +ch);
             var mScripts = my.explode("<script>",data)[4];
             string scripts = my.explode("</script>", mScripts)[0].Trim();
+            scripts = scripts.Replace("var pi=ch", "ch=" + ch + ";var pi=ch");
             //echo(scripts);
             //exit();
             scripts = scripts.Replace("ge('TheImg').src=", "WWWWWTTTTTFFFFF=");
@@ -81,9 +85,12 @@ Usage :
             //scripts = scripts.Replace("adsbygoogle", "//adsbygoogle");
             preScripts.Add(scripts);
             preScripts.Add("ps+\"___\"+\"https:\"+WWWWWTTTTTFFFFF;");
+            
+
             //preScripts.Add("swtvv;");
             string sc = my.implode("\n", preScripts);
             //echo(sc);
+            //exit();
             string finalData = EvalJScript(sc).ToString();
             //echo(sc);
             //exit();
