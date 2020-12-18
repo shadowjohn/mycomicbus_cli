@@ -39,7 +39,7 @@ Usage :
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return ex.Message + "\n\r" + ex.StackTrace;
             }
             return Result;
         }
@@ -71,7 +71,7 @@ Usage :
             preScripts.Add("function mm(p){return (parseInt((p-1)/10)%10)+(((p-1)%10)*3)};");
             preScripts.Add("function nn(n){return n<10?'00'+n:n<100?'0'+n:n;};");
             preScripts.Add("function su(a,b,c){var e=(a+'').substring(b,b+c);return (e);};");
-            preScripts.Add("function lc(l){ if (l.length != 2) return l; var az = \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"; var a = l.substring(0, 1); var b = l.substring(1, 2); if (a == \"Z\") return 8000 + az.indexOf(b); else return az.indexOf(a) * 52 + az.indexOf(b); };");
+            preScripts.Add("function lc(l){ if (l.length != 2) return l; var az = \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"; var a = l.substring(0,1); var b = l.substring(1, 2); if (a == \"Z\") return 8000 + az.indexOf(b); else return az.indexOf(a) * 52 + az.indexOf(b); };");
 
             string ch = "";
             if (!my.is_string_like(URL, "ch="))
@@ -86,9 +86,14 @@ Usage :
             var mScripts = my.explode("<script>", data)[4];
             string scripts = my.explode("</script>", mScripts)[0].Trim();
             scripts = scripts.Replace("var pi=ch", "ch=" + ch + ";var pi=ch");
+            //scripts = scripts.Replace("\n", " ").Replace("\r"," ");
             //echo(scripts);
             //exit();
-            scripts = scripts.Replace("ge('TheImg').src=", "WWWWWTTTTTFFFFF=");
+            scripts = scripts.Replace("document.getElementById(e)", "e");
+            scripts = scripts.Replace("}var", "};var");
+            //scripts = scripts.Replace("ge('TheImg').src=", "WWWWWTTTTTFFFFF=");
+            scripts = scripts.Replace(").src=", ");WWWWWTTTTTFFFFF=");
+            //scripts = scripts.Replace(";", ";\n");
             //scripts = scripts.Replace(";", ";\n");
             //scripts = scripts.Replace("adsbygoogle", "//adsbygoogle");
             preScripts.Add(scripts);
@@ -99,24 +104,27 @@ Usage :
             string sc = my.implode("\n", preScripts);
             //echo(sc);
             //exit();
-            string finalData = EvalJScript(sc).ToString();
+            string finalData = EvalJScript(sc).ToString().Trim();
             //echo(sc);
+            //echo(finalData);
             //exit();
             var m = my.explode("___", finalData);
             int pages = Convert.ToInt32(m[0]);
             string output = "Totals:" + pages.ToString() + "\n";
             string t = m[1].Replace("/001_", "/{PAGE}_");
+            //echo(t);
+            //exit();
             for (int i = 1; i <= pages; i++)
             {
                 //取得 WWWWWTTTTTFFFFF=...... 至 '.jpg';
                 //WWWWWTTTTTFFFFF='//img'+su(yvdnl, 0, 1)+'.8comic.com/'+su(yvdnl,1,1)+'/'+ti+'/'+iyjco+'/'+ nn(p)+'_'+su(qvjme,mm(p),3)+'.jpg';
                 //string d = t.Replace("{PAGE}", i.ToString().PadLeft(3, '0'));
                 //output += d + "\n";
-                var imgPath = "'https:" + my.get_between(sc, ";WWWWWTTTTTFFFFF='", "';");
-                var _sc = sc + imgPath.Replace("(p)", "(" + i + ")") + "';";
-                output += EvalJScript(_sc).ToString() + "\n";
-                //echo(output);
+                var imgPath = "\"https:\"+" + my.get_between(sc, ";WWWWWTTTTTFFFFF=", ";");
+                //echo(imgPath);
                 //exit();
+                var _sc = sc + "\n" + imgPath.Replace("(p)", "(" + i + ")") + ";";
+                output += EvalJScript(_sc).ToString() + "\n";
             }
             echo(output);
         }
