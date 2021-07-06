@@ -1,7 +1,7 @@
 # mycomicbus_cli
 <h2>cli 模式抓 8 comicbus 漫畫 方法</h2>
 <h3>Author : 羽山 https://3wa.tw/</h3>
-<h3>Version : 2020-12-18</h3>
+<h3>Version : 2021-07-06</h3>
 <br>
 <img src="snapshot\01.png">
 直接下語法抓 comicbus 8comic 漫畫列表
@@ -37,4 +37,9 @@ VisualStudio 2017
 <ul>
   <li>Microsoft.JScript</li>
 </ul>
-
+<br>
+<br>
+<h3>ToDo：</h3>
+<ul>
+  <li>(Done 2021-07-06)1、解圖演算法更新，網站加了  localStorage 語法，相容性修正</li>
+</ul>

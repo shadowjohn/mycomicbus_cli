@@ -29,12 +29,14 @@ Usage :
             Environment.Exit(1);
         }
         //From : https://weblog.west-wind.com/posts/2007/feb/14/evaluating-javascript-code-from-c
-        public static Microsoft.JScript.Vsa.VsaEngine Engine = Microsoft.JScript.Vsa.VsaEngine.CreateEngine();
+        //public static Microsoft.JScript.Vsa.VsaEngine Engine = Microsoft.JScript.Vsa.VsaEngine.CreateEngine();
+        public static Microsoft.JScript.Vsa.VsaEngine Engine = Microsoft.JScript.Vsa.VsaEngine.CreateEngine();// AndGetGlobalScope(true, new string[0]).engine;
         public static object EvalJScript(string JScript)
         {
             object Result = null;
             try
             {
+
                 Result = Microsoft.JScript.Eval.JScriptEvaluate(JScript, Engine);
             }
             catch (Exception ex)
@@ -64,15 +66,18 @@ Usage :
             string data = my.b2s(my.file_get_contents(URL));
             //echo(data);
             List<string> preScripts = new List<string>();
+            preScripts.Add("var localStorage={'getItem':function(){return '';}, 'setItem':function(a,b){} };");
             preScripts.Add("var y='46';");
             preScripts.Add("function spp(){};");
             preScripts.Add("var WWWWWTTTTTFFFFF='';");
             preScripts.Add("var document='';");
+            preScripts.Add("function loadingpage(p){};");
+            preScripts.Add("function initcomment(p){};");
             preScripts.Add("function mm(p){return (parseInt((p-1)/10)%10)+(((p-1)%10)*3)};");
             preScripts.Add("function nn(n){return n<10?'00'+n:n<100?'0'+n:n;};");
             preScripts.Add("function su(a,b,c){var e=(a+'').substring(b,b+c);return (e);};");
             preScripts.Add("function lc(l){ if (l.length != 2) return l; var az = \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"; var a = l.substring(0,1); var b = l.substring(1, 2); if (a == \"Z\") return 8000 + az.indexOf(b); else return az.indexOf(a) * 52 + az.indexOf(b); };");
-
+            preScripts.Add("function request(queryStringName){var returnValue=\"\";var URLString=new String(document.location);var serachLocation=-1;var queryStringLength=queryStringName.length;do{serachLocation=URLString.indexOf(queryStringName+\"\\= \");if (serachLocation!=-1){if ((URLString.charAt(serachLocation-1)=='?') || (URLString.charAt(serachLocation-1)=='&')){URLString=URLString.substr(serachLocation);break;}URLString=URLString.substr(serachLocation+queryStringLength+1);}}while (serachLocation!=-1)if (serachLocation!=-1){var seperatorLocation=URLString.indexOf(\" & \");if (seperatorLocation==-1){returnValue=URLString.substr(queryStringLength+1);}else{returnValue=URLString.substring(queryStringLength+1,seperatorLocation);} }return returnValue;}");
             string ch = "";
             if (!my.is_string_like(URL, "ch="))
             {
@@ -83,10 +88,20 @@ Usage :
                 ch = my.explode("-", my.explode("ch=", URL)[1])[0];//第幾回
             }
             //preScripts.Add("ch=" +ch);
-            var mScripts = my.explode("<script>", data)[4];
-            string scripts = my.explode("</script>", mScripts)[0].Trim();
+            //merge all scripts 
+            List<string> AllJS = new List<string>();
+            var mjs = my.explode("<script>", data);
+            for (int i = 6; i < mjs.Count(); i++)
+            {
+                var _m = my.explode("</script>", mjs[i]);
+                AllJS.Add(_m[0]);
+            }
+            //var mScripts = my.explode("<script>", data)[7];
+            //string scripts = my.explode("</script>", mScripts)[0].Trim();
+            string scripts = my.implode("\n\n ", AllJS);
             scripts = scripts.Replace("var pi=ch", "ch=" + ch + ";var pi=ch");
-            //scripts = scripts.Replace("\n", " ").Replace("\r"," ");
+            //scripts = scripts.Replace("\n", " ").Replace("\r", " ");
+            //echo("\nCounts:" + my.explode("<script>", data).Count().ToString() + "\n");
             //echo(scripts);
             //exit();
             scripts = scripts.Replace("document.getElementById(e)", "e");
@@ -102,6 +117,7 @@ Usage :
 
             //preScripts.Add("swtvv;");
             string sc = my.implode("\n", preScripts);
+            sc = sc.Replace("; ", "; \n");
             //echo(sc);
             //exit();
             string finalData = EvalJScript(sc).ToString().Trim();
