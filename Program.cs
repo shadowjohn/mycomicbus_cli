@@ -13,7 +13,7 @@ namespace mycomicbus_cli
 {
     class Program
     {
-        static string URL = "https://comicbus.live/online/a-18838.html?ch=1";
+        static string URL = "https://comicabc.com/online/new-18838.html?ch=1";
         static string MESSAGE = @"
 Usage :
     mycomicbus_cli.exe ""URL""
@@ -66,11 +66,13 @@ Usage :
             string data = my.b2s(my.file_get_contents(URL));
             //echo(data);
             List<string> preScripts = new List<string>();
+            //preScripts.Add("$=function(){};");
             preScripts.Add("var localStorage={'getItem':function(){return '';}, 'setItem':function(a,b){} };");
             preScripts.Add("var y='46';");
             preScripts.Add("function spp(){};");
             preScripts.Add("var WWWWWTTTTTFFFFF='';");
             preScripts.Add("var document='';");
+            //preScripts.Add("function $(p){};");
             preScripts.Add("function loadingpage(p){};");
             preScripts.Add("function initcomment(p){};");
             preScripts.Add("function mm(p){return (parseInt((p-1)/10)%10)+(((p-1)%10)*3)};");
@@ -105,6 +107,7 @@ Usage :
             //echo(scripts);
             //exit();
             scripts = scripts.Replace("document.getElementById(e)", "e");
+
             scripts = scripts.Replace("}var", "};var");
             //scripts = scripts.Replace("ge('TheImg').src=", "WWWWWTTTTTFFFFF=");
             scripts = scripts.Replace(").src=", ");WWWWWTTTTTFFFFF=");
@@ -120,6 +123,14 @@ Usage :
             sc = sc.Replace("; ", "; \n");
             //echo(sc);
             //exit();
+
+            sc = sc.Replace("if (localStorage.getItem(\"imgmode\")" + my.get_between(sc, "if (localStorage.getItem(\"imgmode\")", "document.getElementById(\"barcodeimg\");"), "");
+            sc = sc.Replace("document.writeln(\"<scr" + my.get_between(sc, "document.writeln(\"<scr", "ipt>\");") + "ipt>\");", "");
+            sc = sc.Replace("document.writeln(\"<scr" + my.get_between(sc, "document.writeln(\"<scr", "ipt>\");") + "ipt>\");", "");
+            sc = sc.Replace("document.getElementById(\"barcodeimg\");", "");
+            sc = sc.Replace("(function() {" + my.get_between(sc, "(function() {", "})();") + "})();", "");
+
+            //my.file_put_contents("sc.txt", sc);
             string finalData = EvalJScript(sc).ToString().Trim();
             //echo(sc);
             //echo(finalData);
