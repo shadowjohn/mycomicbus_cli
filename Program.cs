@@ -67,6 +67,8 @@ Usage :
             //echo(data);
             List<string> preScripts = new List<string>();
             //preScripts.Add("$=function(){};");
+            preScripts.Add("var adsbygoogle=null;");
+            //preScripts.Add("var window=null;");
             preScripts.Add("var localStorage={'getItem':function(){return '';}, 'setItem':function(a,b){} };");
             preScripts.Add("var y='46';");
             preScripts.Add("function spp(){};");
@@ -121,6 +123,7 @@ Usage :
             //preScripts.Add("swtvv;");
             string sc = my.implode("\n", preScripts);
             sc = sc.Replace("; ", "; \n");
+            sc = sc.Replace("(adsbygoogl", "//(adsbygoogl");
             //echo(sc);
             //exit();
 
@@ -130,7 +133,7 @@ Usage :
             sc = sc.Replace("document.getElementById(\"barcodeimg\");", "");
             sc = sc.Replace("(function() {" + my.get_between(sc, "(function() {", "})();") + "})();", "");
 
-            //my.file_put_contents("sc.txt", sc);
+            my.file_put_contents("sc.txt", sc);
             string finalData = EvalJScript(sc).ToString().Trim();
             //echo(sc);
             //echo(finalData);
