@@ -12,7 +12,7 @@
 
 mycomicbus_cli.exe<br>
 mycomicbus_cli.exe test<br>
-mycomicbus_cli.exe "https://comicbus.live/online/a-18838.html?ch=1"<br>
+mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1"<br>
 <br>
 
 <h3>回應：</h3>
@@ -49,7 +49,7 @@ mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1"<br>
 <br>
 <h3>ToDo：</h3>
 <ul>
-  <li>(Done 2021-07-06)1、解圖演算法更新，網站加了  localStorage 語法，相容性修正</li>
-  <li>(Done 2021-09-20)2、換網址了</li>
-  <li>(Done 2021-10-05)3、官方偷塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});</li>
+  <li>(Done 2021-07-06) 1、解圖演算法更新，網站加了  localStorage 語法，相容性修正</li>
+  <li>(Done 2021-09-20) 2、換網址了</li>
+  <li>(Done 2021-10-05) 3、官方偷塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});</li>
 </ul>
