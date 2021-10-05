@@ -133,7 +133,7 @@ Usage :
             sc = sc.Replace("document.getElementById(\"barcodeimg\");", "");
             sc = sc.Replace("(function() {" + my.get_between(sc, "(function() {", "})();") + "})();", "");
 
-            my.file_put_contents("sc.txt", sc);
+            //my.file_put_contents("sc.txt", sc);
             string finalData = EvalJScript(sc).ToString().Trim();
             //echo(sc);
             //echo(finalData);
