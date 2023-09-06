@@ -15,13 +15,18 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Diagnostics;
 using System.Collections.Concurrent;
-
+using System.Net.Cache;
+using System.Linq;
 
 namespace utility
 {
     public class myinclude
     {
-
+        public myinclude()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+        }
         public string pwd()
         {
             return Directory.GetCurrentDirectory();
@@ -544,7 +549,8 @@ namespace utility
             if (url.ToLower().IndexOf("http:") > -1 || url.ToLower().IndexOf("https:") > -1)
             {
                 // URL                 
-
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                 HttpWebRequest request = null;
                 HttpWebResponse response = null;
                 byte[] byteData = null;
@@ -552,8 +558,8 @@ namespace utility
                 request = (HttpWebRequest)WebRequest.Create(url);
                 request.Timeout = 60000;
                 request.Proxy = null;
-                request.UserAgent = "user_agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36";
-                //request.Referer = getSystemKey("HTTP_REFERER");
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36";                
+                //request.Referer = "https://comicabc.com/"; // getSystemKey("HTTP_REFERER");
                 response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 byteData = ReadStream(stream, 32765);
@@ -563,34 +569,15 @@ namespace utility
             }
             else
             {
-                /*System.IO.StreamReader sr = new System.IO.StreamReader(url);
-                
-                string sContents = sr.ReadToEnd();
-                sr.Close();
-                return s2b(sContents);
-                */
-                /*FileStream fs = new FileStream(url, FileMode.Open);
-                byte[] buffer = new byte[fs.Length];
-                fs.Read(buffer, 0, buffer.Length);
-                fs.Close();
-                return buffer;
-                */
                 byte[] data;
-                using (StreamReader sr = new StreamReader(url))
+                using (var fs = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        sr.BaseStream.CopyTo(ms);
-                        data = ms.ToArray();
-                        ms.Close();
-                        ms.Dispose();
-                    }
-                    sr.Close();
-                    sr.Dispose();
+                    data = ReadStream(fs, 8192);
+                    fs.Close();
                 };
                 return data;
             }
-        }
+        }        
         public string get_between(string data, string s_begin, string s_end)
         {
             //http://stackoverflow.com/questions/378415/how-do-i-extract-a-string-of-text-that-lies-between-two-parenthesis-using-net

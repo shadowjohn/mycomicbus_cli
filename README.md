@@ -1,7 +1,7 @@
 # mycomicbus_cli
 <h2>cli 模式抓 8 comicbus 漫畫 方法</h2>
 <h3>Author : 羽山 https://3wa.tw/</h3>
-<h3>Version : 2021-10-05</h3>
+<h3>Version : 2023-09-06</h3>
 <br>
 <img src="snapshot\01.png">
 直接下語法抓 comicbus 8comic 漫畫列表
@@ -41,6 +41,7 @@ VisualStudio 2017
 <br>
 <br>
 <h3>版本歷程：</h3>
+2023-09-06 因為無法下載，經檢查是 UserAgent 過舊且格式寫錯，修正了<br>
 2021-10-05 官方多塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});<br>
 加上註解後即排除<br>
 <br>
@@ -52,4 +53,5 @@ mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1"<br>
   <li>(Done 2021-07-06) 1、解圖演算法更新，網站加了  localStorage 語法，相容性修正</li>
   <li>(Done 2021-09-20) 2、換網址了</li>
   <li>(Done 2021-10-05) 3、官方偷塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});</li>
+  <li>(Done 2023-09-06) 4、更新 UserAgent</li>
 </ul>

@@ -8,12 +8,13 @@ using OdeToCode.Utility;
 //using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Web;
+using System.Net;
 
 namespace mycomicbus_cli
 {
     class Program
     {
-        static string URL = "https://comicabc.com/online/new-18838.html?ch=1";
+        static string URL = "https://www.comicabc.com/online/new-18838.html?ch=1";
         static string MESSAGE = @"
 Usage :
     mycomicbus_cli.exe ""URL""
@@ -48,6 +49,8 @@ Usage :
         static myinclude my = new myinclude();
         static void Main(string[] args)
         {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
             if (args.Count() < 1)
             {
                 echo(MESSAGE);
@@ -62,9 +65,11 @@ Usage :
                 echo(MESSAGE);
                 exit();
             }
-
+            //echo(URL);
+            //exit();
             string data = my.b2s(my.file_get_contents(URL));
-            //echo(data);
+            //echo(data);            
+            //exit();
             List<string> preScripts = new List<string>();
             //preScripts.Add("$=function(){};");
             preScripts.Add("var adsbygoogle=null;");
