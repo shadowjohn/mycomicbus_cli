@@ -13,17 +13,19 @@
 mycomicbus_cli.exe<br>
 mycomicbus_cli.exe test<br>
 mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1"<br>
+mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1" -o [output_path]<br>
 <br>
 
 <h3>回應：</h3>
 Totals:70<br>
-https://img4.8comic.com/4/17779/1/001_NT2.jpg<br>
-https://img4.8comic.com/4/17779/1/002_MjH.jpg<br>
-https://img4.8comic.com/4/17779/1/003_58V.jpg<br>
-https://img4.8comic.com/4/17779/1/004_BDH.jpg<br>
-https://img4.8comic.com/4/17779/1/005_cb9.jpg<br>
-https://img4.8comic.com/4/17779/1/006_Uv4.jpg<br>
-https://img4.8comic.com/4/17779/1/007_7uj.jpg<br>
+https://img8.8comic.com/3/18838/1/001_8Nk.jpg<br>
+https://img8.8comic.com/3/18838/1/002_337.jpg<br>
+https://img8.8comic.com/3/18838/1/003_Duc.jpg<br>
+https://img8.8comic.com/3/18838/1/004_9S3.jpg<br>
+https://img8.8comic.com/3/18838/1/005_58c.jpg<br>
+https://img8.8comic.com/3/18838/1/006_4d9.jpg<br>
+https://img8.8comic.com/3/18838/1/007_GWR.jpg<br>
+https://img8.8comic.com/3/18838/1/008_GsQ.jpg<br>
 ...<br>
 ...<br>
 <h3>下載範例：</h3>
@@ -41,7 +43,9 @@ VisualStudio 2017
 <br>
 <br>
 <h3>版本歷程：</h3>
-2023-09-06 因為無法下載，經檢查是 UserAgent 過舊且格式寫錯，修正了<br>
+2023-09-06 
+  1. 因為無法下載，經檢查是 UserAgent 過舊且格式寫錯，修正了<br>
+  2. 增加下載的方法 -○ output_path<br>
 2021-10-05 官方多塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});<br>
 加上註解後即排除<br>
 <br>
@@ -54,4 +58,5 @@ mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1"<br>
   <li>(Done 2021-09-20) 2、換網址了</li>
   <li>(Done 2021-10-05) 3、官方偷塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});</li>
   <li>(Done 2023-09-06) 4、更新 UserAgent</li>
+  <li>(Done 2023-09-06) 5、增加下載的方法 -○ output_path</li>
 </ul>

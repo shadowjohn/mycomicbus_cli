@@ -9,6 +9,7 @@ using OdeToCode.Utility;
 using System.IO;
 using System.Web;
 using System.Net;
+using System.Security.Policy;
 
 namespace mycomicbus_cli
 {
@@ -19,7 +20,8 @@ namespace mycomicbus_cli
 Usage :
     mycomicbus_cli.exe ""URL""
     mycomicbus_cli.exe test
-    mycomicbus_cli.exe """ + URL + @"""    
+    mycomicbus_cli.exe """ + URL + @"""
+    mycomicbus_cli.exe """ + URL + @""" -o [OUTPUT_PATH]
 ";
         static public void echo(string data)
         {
@@ -65,6 +67,18 @@ Usage :
                 echo(MESSAGE);
                 exit();
             }
+
+            string output_path = null;
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].ToLower() == "-o" && i + 1 < args.Length)
+                {
+                    output_path = args[i + 1];
+                    i++; // 跳過下一個參數，因為它是 -o 的值
+                }
+            }
+
             //echo(URL);
             //exit();
             string data = my.b2s(my.file_get_contents(URL));
@@ -162,6 +176,32 @@ Usage :
                 output += EvalJScript(_sc).ToString() + "\n";
             }
             echo(output);
+
+            if (output_path == null)
+            {
+                exit();
+            }
+
+            //需下載
+            if (!my.is_dir(output_path))
+            {
+                my.mkdir(output_path);
+            }
+            for (int i = 1; i <= pages; i++)
+            {
+                //取得 WWWWWTTTTTFFFFF=...... 至 '.jpg';
+                //WWWWWTTTTTFFFFF='//img'+su(yvdnl, 0, 1)+'.8comic.com/'+su(yvdnl,1,1)+'/'+ti+'/'+iyjco+'/'+ nn(p)+'_'+su(qvjme,mm(p),3)+'.jpg';
+                //string d = t.Replace("{PAGE}", i.ToString().PadLeft(3, '0'));
+                //output += d + "\n";
+                var imgPath = "\"https:\"+" + my.get_between(sc, ";WWWWWTTTTTFFFFF=", ";");
+                //echo(imgPath);
+                //exit();
+                var _sc = sc + "\n" + imgPath.Replace("(p)", "(" + i + ")") + ";";
+                string imgURLPath = EvalJScript(_sc).ToString();
+                string CMD = "binary\\wget.exe \"" + imgURLPath + "\" -O \"" + output_path + "\\" + i.ToString() + ".jpg\"";
+                echo(CMD);
+                my.system(CMD);
+            }
         }
     }
 }
