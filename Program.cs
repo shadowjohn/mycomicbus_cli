@@ -86,7 +86,7 @@ Usage :
             //exit();
             List<string> preScripts = new List<string>();
             //preScripts.Add("$=function(){};");
-            preScripts.Add("var adsbygoogle=null;");
+            preScripts.Add("var pp = '';var adsbygoogle=null;");
             //preScripts.Add("var window=null;");
             preScripts.Add("var localStorage={'getItem':function(){return '';}, 'setItem':function(a,b){} };");
             preScripts.Add("var y='46';");
@@ -122,7 +122,10 @@ Usage :
             //var mScripts = my.explode("<script>", data)[7];
             //string scripts = my.explode("</script>", mScripts)[0].Trim();
             string scripts = my.implode("\n\n ", AllJS);
-            scripts = scripts.Replace("var pi=ch", "ch=" + ch + ";var pi=ch");
+            
+            //scripts = scripts.Replace("var pi=ch", "ch=" + ch + ";var pi=ch");
+
+
             //scripts = scripts.Replace("\n", " ").Replace("\r", " ");
             //echo("\nCounts:" + my.explode("<script>", data).Count().ToString() + "\n");
             //echo(scripts);
@@ -160,7 +163,9 @@ Usage :
             var m = my.explode("___", finalData);
             int pages = Convert.ToInt32(m[0]);
             string output = "Totals:" + pages.ToString() + "\n";
-            string t = m[1].Replace("/001_", "/{PAGE}_");
+            //string t = m[1].Replace("/001_", "/{PAGE}_");
+            
+            //t = t.Replace("/00_", "/{PAGE}_");
             //echo(t);
             //exit();
             for (int i = 1; i <= pages; i++)
@@ -172,7 +177,17 @@ Usage :
                 var imgPath = "\"https:\"+" + my.get_between(sc, ";WWWWWTTTTTFFFFF=", ";");
                 //echo(imgPath);
                 //exit();
-                var _sc = sc + "\n" + imgPath.Replace("(p)", "(" + i + ")") + ";";
+                string _sc = "";
+                if (imgPath.IndexOf("(p)") != -1)
+                {
+                    _sc = sc + "\n" + imgPath.Replace("(p)", "(" + i + ")") + ";";
+                }
+                else
+                {
+                    _sc = sc + "\n" + imgPath.Replace("(pp)", "(" + i + ")") + ";";
+                }
+                
+                
                 output += EvalJScript(_sc).ToString() + "\n";
             }
             echo(output);

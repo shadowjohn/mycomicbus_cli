@@ -46,6 +46,7 @@ VisualStudio 2017
 2023-09-06 
   1. 因為無法下載，經檢查是 UserAgent 過舊且格式寫錯，修正了<br>
   2. 增加下載的方法 -○ output_path<br>
+  3. 修正一拳超人也可以下載 https://a.twobili.com/ReadComic/10406/1/1TQ_J0423K6.html<br>
 2021-10-05 官方多塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});<br>
 加上註解後即排除<br>
 <br>
@@ -59,4 +60,5 @@ mycomicbus_cli.exe "https://comicabc.com/online/new-18838.html?ch=1"<br>
   <li>(Done 2021-10-05) 3、官方偷塞了一行 (adsbygoogle = window.adsbygoogle || []).push({});</li>
   <li>(Done 2023-09-06) 4、更新 UserAgent</li>
   <li>(Done 2023-09-06) 5、增加下載的方法 -○ output_path</li>
+  <li>(Done 2023-09-06) 6、修正一拳超人也可以下載 https://a.twobili.com/ReadComic/10406/1/1TQ_J0423K6.html</li>
 </ul>
