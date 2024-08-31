@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Web;
-using System.Data.SqlClient;
-using System.Data;
-using System.Net;
-using System.Configuration;
-using System.Runtime.Serialization;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Concurrent;
-using System.Net.Cache;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Threading;
 using System.Linq;
 
 namespace utility
 {
     public class myinclude
     {
+        public string _userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
         public myinclude()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
@@ -82,7 +78,7 @@ namespace utility
             output["cookies"] = new CookieContainer();
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
             request.CookieContainer = (CookieContainer)output["cookies"];
-            request.UserAgent = "user_agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36";
+            request.UserAgent = _userAgent;
             try
             {
 
@@ -157,7 +153,7 @@ namespace utility
             ConcurrentDictionary<string, object> output = new ConcurrentDictionary<string, object>();
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
             request.Proxy = null;
-            request.UserAgent = "user_agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36";
+            request.UserAgent = _userAgent;
             request.CookieContainer = (CookieContainer)C["cookies"];
             C["cookies"] = request.CookieContainer;
             try
@@ -558,7 +554,7 @@ namespace utility
                 request = (HttpWebRequest)WebRequest.Create(url);
                 request.Timeout = 60000;
                 request.Proxy = null;
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36";                
+                request.UserAgent = _userAgent;
                 //request.Referer = "https://comicabc.com/"; // getSystemKey("HTTP_REFERER");
                 response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
@@ -577,7 +573,7 @@ namespace utility
                 };
                 return data;
             }
-        }        
+        }
         public string get_between(string data, string s_begin, string s_end)
         {
             //http://stackoverflow.com/questions/378415/how-do-i-extract-a-string-of-text-that-lies-between-two-parenthesis-using-net
@@ -646,6 +642,66 @@ namespace utility
         public string[] explode(string[] keyword, string data)
         {
             return data.Split(keyword, StringSplitOptions.None);
+        }
+        public async Task DownloadImages(Dictionary<int, string> downloadList, string savePath, int THREAD_COUNT)
+        {
+            // 使用 HttpClient 來進行 HTTP 請求
+            HttpClient client = new HttpClient();
+            // 設定最大並行度
+            SemaphoreSlim semaphore = new SemaphoreSlim(THREAD_COUNT);
+
+            List<Task> tasks = new List<Task>();
+            int totals = downloadList.Count;
+
+            // 排序字典並按順序下載
+            foreach (var item in downloadList.OrderBy(k => k.Key)) // 按 Key 排序
+            {
+                await semaphore.WaitAsync();
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        string url = item.Value;
+                        string fileName = Path.Combine(savePath, $"{item.Key}.jpg");
+
+                        string CMD = $"binary\\wget.exe \"{url}\" -c -O \"{fileName}\"";
+                        Console.WriteLine($"( {item.Key} / {totals} ): {CMD}");
+
+                        // 執行命令，並確保它同步完成
+                        /*var process = System.Diagnostics.Process.Start("cmd.exe", $"/c {CMD}");
+                        //我不要有彈出視窗
+                        process.StartInfo.CreateNoWindow = true;
+                        process.StartInfo.UseShellExecute = false;
+                        process.StartInfo.RedirectStandardOutput = true;
+                        process.StartInfo.RedirectStandardError = true;
+                        process.StartInfo.RedirectStandardInput = true;
+                        process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;                        
+                        process.WaitForExit();*/
+                        system(CMD);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }));
+            }
+
+            // 等待所有任務完成
+            await Task.WhenAll(tasks);
+        }
+
+        private Task WaitForExitAsync(Process process)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            process.Exited += (sender, args) => tcs.SetResult(true);
+            process.EnableRaisingEvents = true;
+
+            if (process.HasExited)
+            {
+                tcs.SetResult(true);
+            }
+
+            return tcs.Task;
         }
 
     }
